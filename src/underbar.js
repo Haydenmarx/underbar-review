@@ -7,6 +7,7 @@
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
+    return val;
   };
 
   /**
@@ -37,6 +38,7 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
+    return n === undefined ? array[array.length - 1] : array.slice(Math.max(0, array.length - n));
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -45,6 +47,19 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
+    //loop through collection
+    //optional iterator (function)
+    //array
+    //looping through array
+    if (Array.isArray(collection)) {
+      for (var x = 0; x < collection.length; x++) {
+        iterator(collection[x], x, collection);
+      }
+    } else if (typeof collection === 'object') {
+      for (var key in collection) {
+        iterator(collection[key], key, collection);
+      }
+    }
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -66,12 +81,33 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    // i: collection, test
+    // o: changed collection based on test
+    var results = [];
+    
+    collection.forEach(function(item) {
+      if (test(item) === true) {
+        results.push(item);
+      }
+    });
+    return results;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    // i : collection, test
+    // o : oppisite of filter
+    // if (!(_.filter))
+    var results = [];
+    var rejects = _.filter(collection, test);
+    _.filter(collection, function(num) { //[1,2,3,4,5] [1,3,5]
+      if (rejects.indexOf(num) === -1) { //[1,3,5].indexOf(1) = 0
+        results.push(num);
+      }
+    });
+    return results;
   };
 
   // Produce a duplicate-free version of the array.

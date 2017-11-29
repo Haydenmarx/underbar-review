@@ -194,7 +194,19 @@
   _.reduce = function(collection, iterator, accumulator) {
     //if accumulator else collection[0]?
     //repetivitively iterator(accumulator, item)
-    //
+    var accum;
+    if (accumulator !== undefined) {
+      accum = accumulator;
+    } else if (Array.isArray(collection)) {
+      accum = collection[0];
+    } else if (typeof collection === 'object') {
+      // accum = //first object item 
+    }
+    
+    _.each(collection, function(item) {
+      accum = iterator(accum, item);
+    });
+    return accum;
   };
 
   // Determine if the array or object contains a given value (using `===`).
